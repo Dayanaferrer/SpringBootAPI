@@ -10,21 +10,16 @@ public class Programa {
 	
 	public static void main(String[] args) {
 		
-		Pessoa p1 = new Pessoa(null, "Day Ferreira", "exemple@gmail.com");
-		Pessoa p2 = new Pessoa(null, "Katemary Rosa", "katemary@gmail.com");
-		Pessoa p3 = new Pessoa(null, "Thiala Souza", "thiala@gmail.com");
-		
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("exemplo-jpa");
-		EntityManager em = emf.createEntityManager();		//Com essa instancia automaticamente vai ter uma conexã com o banco de dados e toda persistence implementada.
+		EntityManager em = emf.createEntityManager();		
 		
-		em.getTransaction().begin(); //Inicia transação com o banco de dados
-		em.persist(p1); //Persiste pega o o objeto e salva no banco de dados
-		em.persist(p2);
-		em.persist(p3);
-		em.getTransaction().commit(); //confirma as alterações feitas
+		Pessoa p = em.find(Pessoa.class, 2); 	//Primeiro busca o objeto do banco de dados
+		em.getTransaction().begin();			//Operacao que não seja uma simples consulta é necessário colocar transanção
+		em.remove(p);							// e depois manda remover
+		em.getTransaction().commit();
 		
-		System.out.println("Pronto!");
+		System.out.println("Pronto, feito!");
 		em.close();
 		emf.close();
 		
